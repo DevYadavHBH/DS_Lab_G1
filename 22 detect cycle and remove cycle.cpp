@@ -1,90 +1,91 @@
-#include <iostream >
+#include <iostream>
 using namespace std;
 
-class node{
-	public:
-	int data;
-	node* next;
-	node(int data){
-		this -> data = data;
-		this -> next = NULL;
-	}
+class node {
+public:
+    int data;
+    node* next;
+
+    node(int data) : data(data), next(nullptr) {}
+    ~node() {
+        // Destructor to release memory recursively for the linked list
+        if (next != nullptr) {
+            delete next;
+        }
+    }
 };
 
-
-bool hascycle(node* head){
-    if (head == NULL)  return false;
+bool hasCycle(node* head) {
+    if (head == nullptr) return false;
 
     node* fast = head;
-    node * slow = head ;
-    while(fast && fast -> next){
-        if(fast == slow){
+    node* slow = head;
+    while (fast && fast->next) {
+        if (fast == slow) {
             return true;
         }
         slow = slow->next;
-        fast= fast->next->next;
-        
+        fast = fast->next->next;
     }
     return false;
 }
-void removeCycle(node* head) {
-    node* curr = head;
-    node* temp = head;
 
-    // Detect the start of the cycle
-    while (true) {
-        curr  = curr -> next;
-        temp = temp -> next -> next;
-        if (temp == curr) {
+void removeCycle(node* head) {
+    node* slow = head;
+    node* fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (fast == slow) {
             break;
         }
     }
-    node* finder = head;
-    while (finder != curr) {
-        finder = finder->next;
-        curr = curr -> next;
-    }
 
-    // Break the cycle
-    temp = curr;
-    while (temp->next != curr) {
-        temp = temp ->next;
+    if (fast == slow) {
+        // Cycle detected, find the start of the cycle
+        slow = head;
+        while (slow->next != fast->next) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+
+        // Break the cycle
+        fast->next = nullptr;
     }
-    temp ->next =NULL;
 }
 
-
-void print(node* head){
-	node* temp = head;
-	
-	while(temp != NULL){
-		cout << temp -> data << " ";
-		temp = temp -> next;
-	}
-	cout << endl;
+void print(node* head) {
+    // Print the elements of the linked list
+    node* temp = head;
+    while (temp != nullptr) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
 }
-int main(){
-	
-	node*head1 = new node(1);
-    head1 -> next = new node(2);
-    head1 -> next -> next = new node(3);
-    head1 -> next -> next -> next = new node(4);
-    head1 -> next -> next -> next -> next = new node(5);
-    head1 -> next -> next -> next -> next -> next = head1 -> next -> next;
-	if(hascycle(head1)){
-        cout << "cycle is present" << endl;
-        
+
+int main() {
+    // Create a linked list with a cycle
+    node* head1 = new node(1);
+    head1->next = new node(2);
+    head1->next->next = new node(3);
+    head1->next->next->next = new node(4);
+    head1->next->next->next->next = new node(5);
+    head1->next->next->next->next->next = head1->next->next;
+
+    // Check if a cycle is present and remove it
+    if (hasCycle(head1)) {
+        cout << "Cycle is present" << endl;
+
         removeCycle(head1);
-        cout << "Cycle removed." << endl;
+        cout << "Cycle removed" << endl;
+    } else {
+        cout << "Cycle is not present" << endl;
     }
-    else{
-        cout << "cycle is not present" << endl;
-    }
-   
 
-	
+    // Print the linked list before and after removing the cycle
+    cout << "Linked List before removing the cycle: ";
+    print(head1);
+
     return 0;
-    
-	
-
 }
