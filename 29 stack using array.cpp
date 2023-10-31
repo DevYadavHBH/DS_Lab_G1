@@ -1,54 +1,50 @@
 #include <iostream>
-
 using namespace std;
 
-class stack{
-    public:
+class stack {
+public:
+    int* arr;
+    int top;
+    int size;
 
-        int *arr;
-        int top;
-        int size;
-    stack(int size){
-        this -> size = size;
-        arr = new int(size);
+    stack(int size) {
+        this->size = size;
+        arr = new int[size]; // Use square brackets for dynamic array allocation
         top = -1;
     }
-    void push(int element){
-        if(size - top > 1){
+
+    void push(int element) {
+        if (top < size - 1) {
             top++;
             arr[top] = element;
-
-        }
-        else{
+        } else {
             cout << "stack overflow" << endl;
         }
     }
-    void pop(){
-        if(top >= 0){
+
+    void pop() {
+        if (top >= 0) {
             top--;
-        }
-        else{
+        } else {
             cout << "stack underflow" << endl;
         }
     }
-    int peek(){
-        if( top >= 0){
+
+    int peek() {
+        if (top >= 0) {
             return arr[top];
-        }
-        else{
-            cout << "not have any element";
+        } else {
+            cout << "Stack is empty" << endl;
+            return -1; // Return a default value
         }
     }
-    bool isempty(){
-        if(top == -1){
-            return 1;
-        }
-        else{
-            return 0;
-        }
+
+    bool isempty() {
+        return (top == -1);
     }
 };
-int main(){
+
+int main() {
     stack st(5);
 
     st.push(22);
@@ -56,7 +52,6 @@ int main(){
     st.push(44);
     st.push(22);
     st.push(43);
-    
 
     cout << st.peek() << endl;
 
@@ -72,11 +67,14 @@ int main(){
 
     cout << st.peek() << endl;
 
-    if(st.isempty()) {
-        cout << "Stack is Empty  " << endl;
+    if (st.isempty()) {
+        cout << "Stack is Empty" << endl;
+    } else {
+        cout << "Stack is not Empty" << endl;
     }
-    else{
-        cout << "Stack is not Empty  " << endl;
-    }
-   
+
+    // Properly clean up memory by deleting the array
+    delete[] st.arr;
+
+    return 0;
 }
