@@ -8,7 +8,6 @@ int main() {
     cout << "Enter the size of the array: ";
     cin >> size;
 
-   
     cout << "Enter " << size << " elements: ";
     for (int i = 0; i < size; i++) {
         cin >> arr[i];
@@ -18,14 +17,14 @@ int main() {
     cout << "Enter the value to insert at the beginning: ";
     cin >> value;
 
-    
+    // Shift elements to make room for the new value
     for (int i = size; i > 0; i--) {
         arr[i] = arr[i - 1];
     }
 
-   
+    arr[0] = value; // Insert the value at the beginning
 
-    size++; 
+    size++; // Increase the size of the array
 
     cout << "Updated Array after insertion at the beginning: ";
     for (int i = 0; i < size; i++) {
@@ -34,6 +33,7 @@ int main() {
 
     return 0;
 }
+
 // deletion at beginning
 #include <iostream>
 using namespace std;
