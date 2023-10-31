@@ -1,27 +1,25 @@
-
 #include <iostream>
-#include <math.h>
+#include <algorithm> // Include this header for std::max
+
 using namespace std;
 
 class TreeNode {
+public:
     int data;
     TreeNode* left;
     TreeNode* right;
-    int height; 
+    int height;
 
     TreeNode(int value) : data(value), left(nullptr), right(nullptr), height(1) {}
 };
-
 
 int getHeight(TreeNode* node) {
     return (node != nullptr) ? node->height : 0;
 }
 
-
 void updateHeight(TreeNode* node) {
     node->height = 1 + std::max(getHeight(node->left), getHeight(node->right));
 }
-
 
 TreeNode* rotateRight(TreeNode* y) {
     TreeNode* x = y->left;
@@ -36,7 +34,6 @@ TreeNode* rotateRight(TreeNode* y) {
     return x;
 }
 
-
 TreeNode* rotateLeft(TreeNode* x) {
     TreeNode* y = x->right;
     TreeNode* T2 = y->left;
@@ -50,7 +47,6 @@ TreeNode* rotateLeft(TreeNode* x) {
     return y;
 }
 
-
 TreeNode* insert(TreeNode* root, int value) {
     if (root == nullptr) {
         return new TreeNode(value);
@@ -61,7 +57,6 @@ TreeNode* insert(TreeNode* root, int value) {
     } else if (value > root->data) {
         root->right = insert(root->right, value);
     } else {
-        
         return root;
     }
 
@@ -69,24 +64,19 @@ TreeNode* insert(TreeNode* root, int value) {
 
     int balance = getHeight(root->left) - getHeight(root->right);
 
-    
     if (balance > 1) {
         if (value < root->left->data) {
-            
             return rotateRight(root);
         } else {
-            
             root->left = rotateLeft(root->left);
             return rotateRight(root);
         }
     }
-    
+
     if (balance < -1) {
         if (value > root->right->data) {
-            
             return rotateLeft(root);
         } else {
-            
             root->right = rotateRight(root->right);
             return rotateLeft(root);
         }
@@ -94,7 +84,6 @@ TreeNode* insert(TreeNode* root, int value) {
 
     return root;
 }
-
 
 void inorderTraversal(TreeNode* root) {
     if (root) {
@@ -107,7 +96,6 @@ void inorderTraversal(TreeNode* root) {
 int main() {
     TreeNode* root = nullptr;
 
-    
     root = insert(root, 10);
     root = insert(root, 20);
     root = insert(root, 30);
@@ -115,10 +103,8 @@ int main() {
     root = insert(root, 50);
     root = insert(root, 25);
 
-    
     inorderTraversal(root);
     cout << endl;
 
-   
     return 0;
 }
