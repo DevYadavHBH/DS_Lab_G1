@@ -1,65 +1,89 @@
 #include <iostream>
-
+#include <queue>
 using namespace std;
 
-class node{
+class TreeNode {
 public:
     int data;
-    node* left;
-    node* right;
+    TreeNode* left;
+    TreeNode* right;
 
-    node(int d){
-        this -> data = d;
-        this -> left = NULL;
-        this -> right = NULL;
+    TreeNode(int value) {
+        data = value;
+        left = nullptr;
+        right = nullptr;
     }
 };
 
-node* buildingtree(node*root){
+TreeNode* buildBinaryTree() {
     int data;
-    cout << "enter the data" << endl;
+    cout << "Enter the root node value (-1 for empty): ";
     cin >> data;
-    root = new node(data);
-    if(data == -1){
-        return NULL;
+
+    if (data == -1) {
+        return nullptr;
     }
-    cout << "enter the left value of " << data << endl;
-    root -> left = buildingtree(root -> left);
-    cout << "enter the right value of " << data << endl;
-    root -> right = buildingtree(root -> right);
+
+    TreeNode* root = new TreeNode(data);
+    queue<TreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        TreeNode* current = q.front();
+        q.pop();
+
+        int leftValue, rightValue;
+
+        cout << "Enter left child value of " << current->data << " (-1 for empty): ";
+        cin >> leftValue;
+
+        if (leftValue != -1) {
+            current->left = new TreeNode(leftValue);
+            q.push(current->left);
+        }
+
+        cout << "Enter right child value of " << current->data << " (-1 for empty): ";
+        cin >> rightValue;
+
+        if (rightValue != -1) {
+            current->right = new TreeNode(rightValue);
+            q.push(current->right);
+        }
+    }
+
     return root;
 }
 
-void levelorder(node* root){
-    queue<node*> q;
-    q.push(root);
-    q.push(NULL);
-    while(!q.empty()){j
-        node*temp = q.front();
-        q.pop();
-        if(temp == NULL){
-            cout << endl;
-            if(!q.empty()){
-                q.push(NULL);
-            }
-        }
-        else{
-            cout << temp -> data ;
-            if(temp -> left){
-                q.push(temp -> left);
+void levelOrderTraversal(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
 
-            }
-            if(temp -> right){
-                q.push(temp -> right);
-            }
+    queue<TreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        TreeNode* current = q.front();
+        q.pop();
+
+        cout << current->data << " ";
+
+        if (current->left != nullptr) {
+            q.push(current->left);
+        }
+
+        if (current->right != nullptr) {
+            q.push(current->right);
         }
     }
 }
 
-int main(){
-    node* root = NULL;
-     root = buildingtree(root);
-     levelorder(root);
-    
+int main() {
+    TreeNode* root = buildBinaryTree();
 
+    cout << "Level Order Traversal of the Binary Tree: ";
+    levelOrderTraversal(root);
+    cout << endl;
+
+    return 0;
 }
